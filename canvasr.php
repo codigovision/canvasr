@@ -73,16 +73,17 @@ function canvasr($file, $height, $width, $depth, $debug) {
         $output = $newImage;
     }
 
-    // Scale and crop
-    //exec("convert -units PixelsPerInch $file -density $dpi -resize '$pxWidth x $pxHeight ^' -gravity center -crop '$pxWidth x $pxHeight +0+0' '$newImage'");
-
-    //Mirror Edges
-    //exec("convert '$newImage' -virtual-pixel mirror -set option:distort:viewport '$cWidth x $cHeight -$pxDepth -$pxDepth' -distort SRT 0 +repage '$newImage'");
-
-    //echo '<img src="'.$newImage.'" style="max-width:100%"/>';
+    // Set Imagemagick path:
+    if (file_exists('/usr/bin/convert')) {
+        $convert = '/usr/bin/convert';
+    } elseif (file_exists('/usr/local/bin/convert')) {
+        $convert = '/usr/local/bin/convert';
+    } else {
+        echo 'Error: Can not find the path to ImageMagick convert.';
+    }
 
     // Scale, crop and mirror edges
-    $cmd = "/usr/local/bin/convert -units PixelsPerInch '$sourceImage' -density $dpi -resize '$pxWidth x $pxHeight ^' -gravity center -crop '$pxWidth x $pxHeight +0+0' -virtual-pixel mirror -set option:distort:viewport '$cWidth x $cHeight -$pxDepth -$pxDepth' -distort SRT 0 +repage $output";
+    $cmd = "$convert -units PixelsPerInch '$sourceImage' -density $dpi -resize '$pxWidth x $pxHeight ^' -gravity center -crop '$pxWidth x $pxHeight +0+0' -virtual-pixel mirror -set option:distort:viewport '$cWidth x $cHeight -$pxDepth -$pxDepth' -distort SRT 0 +repage $output";
 
     if ($debug == True) {
 
