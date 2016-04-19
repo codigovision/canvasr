@@ -58,9 +58,7 @@ function canvasr($file, $height, $width, $depth, $debug) {
     $cWidth = $pxWidth + ($pxDepth * 2);
     $cHeight = $pxHeight + ($pxDepth * 2);
 
-    $image = $_FILES['upload']['name'];
-    $filename = basename($image, ".jpg");
-    $newImage = $filename . '-canvas.jpg';
+    $newImage = $_FILES['upload']['name'];
 
     // Scale and crop
     //exec("convert -units PixelsPerInch $file -density $dpi -resize '$pxWidth x $pxHeight ^' -gravity center -crop '$pxWidth x $pxHeight +0+0' '$newImage'");
@@ -71,23 +69,22 @@ function canvasr($file, $height, $width, $depth, $debug) {
     //echo '<img src="'.$newImage.'" style="max-width:100%"/>';
 
     // Scale, crop and mirror edges
-    $cmd = "/usr/local/bin/convert -units PixelsPerInch $image -density $dpi -resize '$pxWidth x $pxHeight ^' -gravity center -crop '$pxWidth x $pxHeight +0+0' -virtual-pixel mirror -set option:distort:viewport '$cWidth x $cHeight -$pxDepth -$pxDepth' -distort SRT 0 +repage $newImage";
+    $cmd = "convert -units PixelsPerInch $file -density $dpi -resize '$pxWidth x $pxHeight ^' -gravity center -crop '$pxWidth x $pxHeight +0+0' -virtual-pixel mirror -set option:distort:viewport '$cWidth x $cHeight -$pxDepth -$pxDepth' -distort SRT 0 +repage JPG:-";
 
-    print $cmd;
-//    if ($debug !== True) {
-//
-//        header('Pragma: public'); 	// required
-//        header('Expires: 0');		// no cache
-//        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-//        //header('Last-Modified: '.gmdate ('D, d M Y H:i:s', filemtime ($_FILES['upload']['tmp_name'])).' GMT');
-//        header('Cache-Control: private',false);
-//        header('Content-Type: '.$_FILES['upload']['type']);
-//        header('Content-Disposition: attachment; filename="'.basename($newImage).'"');
-//        header('Content-Transfer-Encoding: binary');
-//        //header('Content-Length: '.filesize($_FILES['upload']['tmp_name']));	// provide file size
-//        header('Connection: close');
-//        passthru($cmd, $retval);
-//        exit();
-//
-//    }
+    if ($debug !== True) {
+
+        header('Pragma: public'); 	// required
+        header('Expires: 0');		// no cache
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        //header('Last-Modified: '.gmdate ('D, d M Y H:i:s', filemtime ($_FILES['upload']['tmp_name'])).' GMT');
+        header('Cache-Control: private',false);
+        header('Content-Type: '.$_FILES['upload']['type']);
+        header('Content-Disposition: attachment; filename="'.basename($newImage).'"');
+        header('Content-Transfer-Encoding: binary');
+        //header('Content-Length: '.filesize($_FILES['upload']['tmp_name']));	// provide file size
+        header('Connection: close');
+        passthru($cmd, $retval);
+        exit();
+
+    }
 }
