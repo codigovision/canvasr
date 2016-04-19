@@ -25,23 +25,28 @@
         <form action="canvasr.php" method="post" enctype="multipart/form-data">
 
             <div class="form-group">
-                <label id="upload" for="upload">Select a file:</label>
+                <label for="upload">Select a file:</label>
                 <input type="file" id="upload" name="upload" required />
             </div>
 
             <div class="form-group">
-                <label for="canvas">Canvas Height:</label>
-                <input type="number" step="any" name="height" class="form-control" required />
+                <label for="height">Canvas Height:</label>
+                <input id="height" type="number" step="any" name="height" class="form-control" required />
             </div>
 
             <div class="form-group">
-                <label for="canvas">Canvas Width:</label>
-                <input type="number" step="any" name="width" class="form-control" required />
+                <label for="width">Canvas Width:</label>
+                <input id="width" type="number" step="any" name="width" class="form-control" required />
             </div>
 
             <div class="form-group">
-                <label for="canvas">Canvas Depth:</label>
-                <input type="number" step="any" name="depth" class="form-control" required />
+                <label for="depth">Canvas Depth:</label>
+                <input id="depth" type="number" step="any" name="depth" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label for="debug">Debug:</label>
+                <input id="debug" type="checkbox" name="debug" class="xform-control" />
             </div>
 
             <input type="hidden" name="action" value="upload"/>

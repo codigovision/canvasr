@@ -1,14 +1,17 @@
 <?php
 
-$debug = False; // True or False
-
-if ($debug == True) echo '<h1>Debugging on</h1>';
-
 // Make sure the file is valid and get contents
 if (isset($_FILES['upload']) && is_uploaded_file($_FILES['upload']['tmp_name'])) {
 
+    $debug = False; // True or False
+
+    if (isset($_POST['debug'])){
+        $debug = True;
+    }
+
     //DEBUG:
     if ($debug == True) {
+        echo '<h1>Debugging on</h1>';
         echo '<strong>File:</strong> ' . var_dump($_FILES['upload']) . '<br>';
         echo '<strong>Filename:</strong> ' . $_FILES['upload']['name'] . '<br>';
         echo '<strong>File Type:</strong> ' . $_FILES['upload']['type'] . '<br>';
@@ -58,7 +61,17 @@ function canvasr($file, $height, $width, $depth, $debug) {
     $cWidth = $pxWidth + ($pxDepth * 2);
     $cHeight = $pxHeight + ($pxDepth * 2);
 
-    $newImage = $_FILES['upload']['name'];
+    $image = $_FILES['upload']['name'];
+    $filename = basename($image, ".jpg");
+    $newImage = $filename . '-canvas.jpg';
+
+    $sourceImage = $file;
+    $output = 'JPG:-';
+
+    if ($debug == True) {
+        $sourceImage = $image;
+        $output = $newImage;
+    }
 
     // Scale and crop
     //exec("convert -units PixelsPerInch $file -density $dpi -resize '$pxWidth x $pxHeight ^' -gravity center -crop '$pxWidth x $pxHeight +0+0' '$newImage'");
@@ -69,9 +82,13 @@ function canvasr($file, $height, $width, $depth, $debug) {
     //echo '<img src="'.$newImage.'" style="max-width:100%"/>';
 
     // Scale, crop and mirror edges
-    $cmd = "convert -units PixelsPerInch $file -density $dpi -resize '$pxWidth x $pxHeight ^' -gravity center -crop '$pxWidth x $pxHeight +0+0' -virtual-pixel mirror -set option:distort:viewport '$cWidth x $cHeight -$pxDepth -$pxDepth' -distort SRT 0 +repage JPG:-";
+    $cmd = "/usr/local/bin/convert -units PixelsPerInch '$sourceImage' -density $dpi -resize '$pxWidth x $pxHeight ^' -gravity center -crop '$pxWidth x $pxHeight +0+0' -virtual-pixel mirror -set option:distort:viewport '$cWidth x $cHeight -$pxDepth -$pxDepth' -distort SRT 0 +repage $output";
 
-    if ($debug !== True) {
+    if ($debug == True) {
+
+        print $cmd;
+
+    } else {
 
         header('Pragma: public'); 	// required
         header('Expires: 0');		// no cache
