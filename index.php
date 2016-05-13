@@ -45,6 +45,11 @@
             </div>
 
             <div class="form-group">
+                <label for="dpi">DPI: (Print = 300, Web = 72)</label>
+                <input id="dpi" type="number" step="any" name="dpi" class="form-control" value="300" required />
+            </div>
+
+            <div class="form-group">
                 <label for="debug">Debug:</label>
                 <input id="debug" type="checkbox" name="debug" class="xform-control" />
             </div>

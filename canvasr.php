@@ -21,6 +21,7 @@ if (isset($_FILES['upload']) && is_uploaded_file($_FILES['upload']['tmp_name']))
         echo '<strong>Canvas Height:</strong> ' . $_POST['height'] . '&quot;<br>';
         echo '<strong>Canvas Width:</strong> ' . $_POST['width'] . '&quot;<br>';
         echo '<strong>Canvas Depth:</strong> ' . $_POST['depth'] . '&quot;<br>';
+        echo '<strong>DPI:</strong> ' . $_POST['dpi'] . '&quot;<br>';
     }
 
     if ($_FILES['upload']['type'] !== 'image/jpeg') {
@@ -42,7 +43,7 @@ if (isset($_FILES['upload']) && is_uploaded_file($_FILES['upload']['tmp_name']))
     } else {
 
         // Process Image
-        canvasr($_FILES['upload']['tmp_name'], $_POST['height'], $_POST['width'], $_POST['depth'], $debug);
+        canvasr($_FILES['upload']['tmp_name'], $_POST['height'], $_POST['width'], $_POST['depth'], $_POST['dpi'], $debug);
 
     }
 
@@ -50,9 +51,11 @@ if (isset($_FILES['upload']) && is_uploaded_file($_FILES['upload']['tmp_name']))
     echo 'No File Detected. Please go back and upload a jpg file.';
 }
 
-function canvasr($file, $height, $width, $depth, $debug) {
+function canvasr($file, $height, $width, $depth, $dpi, $debug) {
 
-    $dpi = 300;
+    if (!isset($dpi)) {
+        $dpi = 300;
+    }
 
     $pxWidth = $width * $dpi;
     $pxHeight = $height * $dpi;
