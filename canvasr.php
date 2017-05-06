@@ -81,6 +81,8 @@ function canvasr($file, $height, $width, $depth, $dpi, $debug) {
         $convert = '/usr/bin/convert';
     } elseif (file_exists('/usr/local/bin/convert')) {
         $convert = '/usr/local/bin/convert';
+    } elseif (file_exists('/opt/local/bin/convert')) {
+        $convert = '/opt/local/bin/convert';
     } else {
         echo 'Error: Can not find the path to ImageMagick convert.';
     }
